@@ -2,9 +2,7 @@ const path = require('path');
 const express = require('express');
 const bodyParser = require('body-parser');
 
-console.log('environment    ', process.env.ENVIRONMENT)
-console.log('PORT    ', process.env.PORT)
-console.log('MONGO_CONNECTION_STRING    ', process.env.MONGO_CONNECTION_STRING)
+
 if(process.env.ENVIRONMENT !== 'production') {
     require('dotenv').config()
 }
@@ -15,9 +13,10 @@ const taskController = require('./controller/task.controller')
 
 
 const app = express();
-const port = process.env.PORT || 3080;
+// const port = process.env.PORT || 3080;
+const port = process.env.PORT || 8080;
 
-app.use(express.static(path.join(__dirname, './ui/build')));
+app.use(express.static(path.join(__dirname, './build')));
 app.use(bodyParser.json());
 
 app.get('/api/tasks', (req, res) => {
@@ -38,10 +37,12 @@ app.delete('/api/task/:id', (req, res) => {
 });
 
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, './ui/build/index.html'));
+    res.sendFile(path.join(__dirname, './build/index.html'));
 });
 
-
+console.log('environment    ', process.env.ENVIRONMENT)
+console.log('PORT    ', process.env.PORT)
+console.log('MONGO_CONNECTION_STRING    ', process.env.MONGO_CONNECTION_STRING)
 
 app.listen(port, () => {
     console.log(`Server listening on the port  ${port}`);

@@ -3,10 +3,15 @@ const logger = require('../logger/api.logger');
 
 const connect = () => {
 
-    const url = process.env.MONGO_CONNECTION_STRING;
+    // const url = process.env.MONGO_CONNECTION_STRING;
+    const url = "mongodb://"+process.env.COSMOSDB_HOST+":"+process.env.COSMOSDB_PORT+"/"+process.env.COSMOSDB_DBNAME+"?ssl=true&replicaSet=globaldb&retrywrites=false";
     logger.info("process.env.MONGO_CONNECTION_STRING :::" + process.env.MONGO_CONNECTION_STRING);
 
     mongoose.connect(url, {
+        auth: {
+            user: process.env.COSMOSDB_USER,
+            password: process.env.COSMOSDB_PASSWORD
+          },
         useNewUrlParser: true,
         useFindAndModify: true,
         useUnifiedTopology: true,
